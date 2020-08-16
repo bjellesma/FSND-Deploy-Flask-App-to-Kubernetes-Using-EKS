@@ -1,0 +1,26 @@
+{
+  "name": "FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS",
+  "version": "1.0.0",
+  "description": "This is the project starter repo for the fourth course in the [Udacity Full Stack Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004): Server Deployment, Containerization, and Testing.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "install": "python3 -m pipenv install",
+    "server": "python3 -m pipenv run python main.py",
+    "docker-build": "docker build -t 'jwt-api' .",
+    "docker-run": "docker run -p 80:8080 jwt-api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjellesma/FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjellesma/FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS/issues"
+  },
+  "homepage": "https://github.com/bjellesma/FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS#readme"
+}

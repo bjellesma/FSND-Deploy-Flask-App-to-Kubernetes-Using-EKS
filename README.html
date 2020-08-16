@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/lib/index.min.js">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@0.6.5/css/texmath.css">
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/vscode-texmath.css">
+
+</head>
+<body class="markdown-body">
+<h1 id="deploying-a-flask-api" data-line="0" class="code-line">Deploying a Flask API</h1>
+<p data-line="2" class="code-line">This is the project starter repo for the fourth course in the <a href="https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004" data-href="https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004">Udacity Full Stack Nanodegree</a>: Server Deployment, Containerization, and Testing.</p>
+<p data-line="4" class="code-line">In this project you will containerize and deploy a Flask API to a Kubernetes cluster using Docker, AWS EKS, CodePipeline, and CodeBuild.</p>
+<p data-line="6" class="code-line">The Flask app that will be used for this project consists of a simple API with three endpoints:</p>
+<ul>
+<li data-line="8" class="code-line"><code>GET '/'</code>: This is a simple health check, which returns the response 'Healthy'.</li>
+<li data-line="9" class="code-line"><code>POST '/auth'</code>: This takes a email and password as json arguments and returns a JWT based on a custom secret.</li>
+<li data-line="10" class="code-line"><code>GET '/contents'</code>: This requires a valid JWT, and returns the un-encrpyted contents of that token.</li>
+</ul>
+<p data-line="12" class="code-line">The app relies on a secret set as the environment variable <code>JWT_SECRET</code> to produce a JWT. The built-in Flask server is adequate for local development, but not production, so you will be using the production-ready <a href="https://gunicorn.org/" data-href="https://gunicorn.org/">Gunicorn</a> server when deploying the app.</p>
+<h2 id="initial-setup" data-line="14" class="code-line">Initial setup</h2>
+<ol>
+<li data-line="15" class="code-line">Fork this project to your Github account.</li>
+<li data-line="16" class="code-line">Locally clone your forked version to begin working on the project.</li>
+</ol>
+<h2 id="dependencies" data-line="18" class="code-line">Dependencies</h2>
+<ul>
+<li data-line="20" class="code-line">Docker Engine
+<ul>
+<li data-line="21" class="code-line">Installation instructions for all OSes can be found <a href="https://docs.docker.com/install/" data-href="https://docs.docker.com/install/">here</a>.</li>
+<li data-line="22" class="code-line">For Mac users, if you have no previous Docker Toolbox installation, you can install Docker Desktop for Mac. If you already have a Docker Toolbox installation, please read <a href="https://docs.docker.com/docker-for-mac/docker-toolbox/" data-href="https://docs.docker.com/docker-for-mac/docker-toolbox/">this</a> before installing.</li>
+</ul>
+</li>
+<li data-line="23" class="code-line">AWS Account
+<ul>
+<li data-line="24" class="code-line">You can create an AWS account by signing up <a href="https://aws.amazon.com/#" data-href="https://aws.amazon.com/#">here</a>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="project-steps" data-line="26" class="code-line">Project Steps</h2>
+<p data-line="28" class="code-line">Completing the project involves several steps:</p>
+<ol>
+<li data-line="30" class="code-line">Write a Dockerfile for a simple Flask API</li>
+<li data-line="31" class="code-line">Build and test the container locally</li>
+<li data-line="32" class="code-line">Create an EKS cluster</li>
+<li data-line="33" class="code-line">Store a secret using AWS Parameter Store</li>
+<li data-line="34" class="code-line">Create a CodePipeline pipeline triggered by GitHub checkins</li>
+<li data-line="35" class="code-line">Create a CodeBuild stage which will build, test, and deploy your code</li>
+</ol>
+<p data-line="37" class="code-line">For more detail about each of these steps, see the project lesson <a href="https://classroom.udacity.com/nanodegrees/nd004/parts/1d842ebf-5b10-4749-9e5e-ef28fe98f173/modules/ac13842f-c841-4c1a-b284-b47899f4613d/lessons/becb2dac-c108-4143-8f6c-11b30413e28d/concepts/092cdb35-28f7-4145-b6e6-6278b8dd7527" data-href="https://classroom.udacity.com/nanodegrees/nd004/parts/1d842ebf-5b10-4749-9e5e-ef28fe98f173/modules/ac13842f-c841-4c1a-b284-b47899f4613d/lessons/becb2dac-c108-4143-8f6c-11b30413e28d/concepts/092cdb35-28f7-4145-b6e6-6278b8dd7527">here</a>.</p>
+<h2 id="custom-readme" data-line="39" class="code-line">Custom Readme</h2>
+<ol>
+<li data-line="41" class="code-line">Install <a href="https://nodejs.org/en/" data-href="https://nodejs.org/en/">NodeJS</a> in order to run npm packages</li>
+<li data-line="42" class="code-line">Install <a href="https://pipenv-fork.readthedocs.io/en/latest/" data-href="https://pipenv-fork.readthedocs.io/en/latest/">pipenv</a> to run the necessary python packages</li>
+<li data-line="43" class="code-line">Run <code>npm run install</code> to a virtual environment and all of its packages</li>
+<li data-line="44" class="code-line">Edit <code>.env-sample</code> using the following environmental variables and rename the file to <code>.env</code></li>
+</ol>
+<pre><code data-line="46" class="code-line"><code><div>JWT_SECRET=&lt;A string to be the JWT Secret&gt;
+LOG_LEVEL=&lt;Level of logging reported by the server. E.G. DEBUG, INFO, etc.&gt;
+</div></code></code></pre>
+<ol start="5">
+<li data-line="51" class="code-line">Use <code>npm run server</code> to start the app on <a href="http://127.0.0.1:8080" data-href="http://127.0.0.1:8080">http://127.0.0.1:8080</a></li>
+</ol>
+<h3 id="docker" data-line="53" class="code-line">Docker</h3>
+<ol>
+<li data-line="55" class="code-line">Run <code>npm run docker-build</code> to build a docker image</li>
+<li data-line="56" class="code-line">Using <code>npm run docker-run</code> will run the docker image assuming the following:
+<ul>
+<li data-line="57" class="code-line">Binding port 80 of your machine to port 8080 of the container. Port 8080 is the port where the API server runs by default.</li>
+<li data-line="58" class="code-line">Assuming that you've used the same tag, <code>jwt-api</code>, as specified in the <code>docker-build</code> command above.</li>
+<li data-line="59" class="code-line">Assuming that your environmental variables are contained in the same directory in a file called <code>.env</code></li>
+</ul>
+</li>
+</ol>
+
+</body></html>
